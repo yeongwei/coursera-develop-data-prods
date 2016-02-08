@@ -19,4 +19,4 @@ The computation model is based on materials found [here](http://www.hughcalc.org
 
 ## Disclaimer
 
-This Application is meant to give a fair estimate on mortages payments and may not be 100% accurate.
+This application is meant for estimation on mortgages payments and may not be 100% accurate.
