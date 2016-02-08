@@ -2,12 +2,20 @@ require(shiny)
 require(lubridate)
 require(rCharts)
 
+# ================================================
+# == Computes the monthly mortgage repayment =====
+# ================================================
 calcMonthlyPayment <- function(principle, monthlyInterest, monthsToPay) {
-  return(round(principle * (monthlyInterest/(1-(1+monthlyInterest)^(-monthsToPay))), digits = 2))
+  round(
+    principle * ( monthlyInterest / ( 1 - ( 1 + monthlyInterest ) ^ ( -monthsToPay ) ) ), 
+    digits = 2)
 }
 
+# =================================================
+# == Creates the monthly armotization table =======
+# =================================================
 createMonthlyTable <- function(principle, monthlyInterest, monthlyPymt, startD, endD) { 
-  # Calculate Mortage
+  # Compute the monthly repayment
   monthlyMortgage <- data.frame()
   balance <- principle
   while(round(balance, digits = 2) != 0.00) {
@@ -19,7 +27,7 @@ createMonthlyTable <- function(principle, monthlyInterest, monthlyPymt, startD, 
   }
   monthlyMortgage <- round(monthlyMortgage, digits = 2)
   
-  # Create Date columns
+  # Append date
   yearMonthSeq <- seq(startD, endD, by="month")
   if(length(yearMonthSeq)-1 == nrow(monthlyMortgage)) {
     yearMonthSeq <- yearMonthSeq[-length(yearMonthSeq)]
@@ -33,25 +41,28 @@ createMonthlyTable <- function(principle, monthlyInterest, monthlyPymt, startD, 
   } 
   yearMonthSeqStr <- do.call(rbind, strsplit(format(yearMonthSeq, "%Y-%b"), "-"))
   
-  #Return MonthlyTable
-  return(data.frame(
+  # Prettified data frame
+  data.frame(
     DateByMonth = yearMonthSeq,
     Year = as.integer(yearMonthSeqStr[,1]),
     Month = as.character(yearMonthSeqStr[,2]),
     Interest = monthlyMortgage[,1],
     Principle = monthlyMortgage[,2],
     Balance = monthlyMortgage[,3],
-    stringsAsFactors = F))
+    stringsAsFactors = F)
 }
 
+# ================================================
+# == Creates the annually amortization table =====
+# ================================================
 createAnnualTable <- function(monthlyTbl) {
-  return(cbind(
+  cbind(
     aggregate(. ~ Year, data = monthlyTbl[, c("Year", "Interest", "Principle")], sum),
-    Balance = (aggregate(. ~ Year, data = monthlyTbl[, c("Year", "Balance")], min))$Balance))
+    Balance = (aggregate(. ~ Year, data = monthlyTbl[, c("Year", "Balance")], min))$Balance)
 }
 
 filterTableByMonth <- function(monthlyTbl, dispYear) {
-  return(monthlyTbl[monthlyTbl$Year == dispYear,])
+  monthlyTbl[monthlyTbl$Year == dispYear,]
 }
 
 shinyServer(

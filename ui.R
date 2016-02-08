@@ -5,11 +5,11 @@ require(rCharts)
 CALC_NOW <- list(
   title = function() { "Calculate Now" },
   heading = function() { h1("Fill in Your Mortgage Information") },
-  inputPropertyValue = function() { numericInput('propValI', 'Property Value ($):', value = 10000, min = 0) },
-  inputDownPayment = function() { numericInput('downPayI', 'Down Payment ($):', value = 100, min = 0) },
+  inputPropertyValue = function() { numericInput('propValI', 'Property Value ($):', value = 300000, min = 0) },
+  inputDownPayment = function() { numericInput('downPayI', 'Down Payment ($):', value = 30000, min = 0) },
   inputPaymentStartDte = function() { dateInput("startDateI", "Repayment Start Date:", value = Sys.Date()) },
-  inputInterestRate = function() { sliderInput('interestI', 'Loan Interest rate (%):', value = 0.01, min = 0.00, max = 30.00, step = 0.01) },
-  inputYears2Complete = function() { numericInput('yearsPayI', 'Years To Complete:', value = 10, min = 0) }
+  inputInterestRate = function() { sliderInput('interestI', 'Loan Interest rate (%):', value = 5.00, min = 0.00, max = 30.00, step = 0.01) },
+  inputYears2Complete = function() { numericInput('yearsPayI', 'Years To Complete:', value = 20, min = 0) }
   )
 
 shinyUI(
@@ -97,6 +97,7 @@ shinyUI(
       h1("Overview"),
       p("This Shiny Application is a Course Project submission for the Data Science Specialization conducted by Cousera along with the John Hopkins University."),
       p("The main objective of this Application is to allow user to compute and view the mortgage repayments in a burnt-down fashion both annually and monthly."),
+      p("The formula for the calculation is adopted from \"http://www.hughcalc.org/formula.php\"."),
       h1("Author"), 
       p("YeongWei <yeongwei@gmail.com>"),
       h1("Last Updated"), p("7th February 2016")
